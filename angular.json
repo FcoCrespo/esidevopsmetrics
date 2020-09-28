@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "esidevopsmetrics"
+    }
+  },
+  "defaultProject": "esidevopsmetrics",
+  "cli": {
+    "analytics": false
+  }
 }
