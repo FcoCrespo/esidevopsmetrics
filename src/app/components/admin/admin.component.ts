@@ -76,6 +76,10 @@ export class AdminComponent implements OnInit {
     return this.chartData;
   }
 
+  clickEvent(){
+    this.router.navigate(['/metrics']);      
+  }
+
 
   logout() {
     this.authService.logout();
