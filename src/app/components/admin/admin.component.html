@@ -2,6 +2,6 @@
 <p>{{getUsername}}</p>
 <p>{{getPassword}}</p>
 <ul>
-    <li class="branches" onclick="location.href='http://localhost:4200/metrics';" *ngFor="let branch of branches;" id={{branch.name}}>{{branch.name}}</li>
+    <li class="branches" (click)="clickEvent()" *ngFor="let branch of branches;" id={{branch.name}}>{{branch.name}}</li>
 </ul>
 <p>{{getChartData}}</p>
