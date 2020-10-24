@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        document.body.classList.add('bg-img');
         //esto desloguea el usuario antes de empezar el proceso
         this.authService.logout();
 
@@ -35,6 +37,7 @@ export class LoginComponent implements OnInit {
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
+        
 
     }
 

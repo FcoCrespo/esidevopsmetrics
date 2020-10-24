@@ -38,12 +38,6 @@
     padding: 10px;
 }
 
-.login-bg {
-    content: url(/src/assets/office.jpg);
-    position: relative;
-    top: 0%;
-    left: -60%;
-}
 
 
 /* Every row inside .login-container is defined with p tags */

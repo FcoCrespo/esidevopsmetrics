@@ -11,13 +11,16 @@ import { JwtInterceptor, ErrorInterceptor } from './interceptors';
 import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MetricsComponent } from './components/metrics/metrics.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AlertComponent,
     AdminComponent,
-    LoginComponent
+    LoginComponent,
+    MetricsComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import { LoginComponent } from './components/login/login.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
