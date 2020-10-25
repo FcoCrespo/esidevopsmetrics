@@ -4,4 +4,4 @@
 <ul>
     <li class="branches" (click)="clickEvent()" *ngFor="let branch of branches;" id={{branch.name}}>{{branch.name}}</li>
 </ul>
-<p>{{getChartData}}</p>
+<p (click)="clickBranch()">{{getChartData}}</p>

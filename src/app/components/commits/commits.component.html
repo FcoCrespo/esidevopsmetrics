@@ -1,0 +1,8 @@
+<div id="buscador" style="visibility: hidden"><app-searchcommits (search)="handleSearch($event)"></app-searchcommits></div>
+
+<ul>
+    <li *ngFor="let commit of commits | filter:filtro_valor">{{ commit.oid }}</li>
+</ul>
+
+<button (click)="mostrarResultados()">MOSTRAR RESULTADOS</button>
+<div class="showInputField"></div> 

@@ -11,9 +11,6 @@ export interface BranchesData {
   name: string;
   order: string;
 }
-
-const ELEMENT_DATA: BranchesData[] = [];
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -78,6 +75,10 @@ export class AdminComponent implements OnInit {
 
   clickEvent(){
     this.router.navigate(['/metrics']);      
+  }
+
+  clickBranch(){
+    this.router.navigate(['/commits']);      
   }
 
 

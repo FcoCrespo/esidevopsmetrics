@@ -19,6 +19,8 @@ const ELEMENT_DATA: BranchesData[] = [];
 })
 export class MetricsComponent implements OnInit {
 
+  public htmlToAdd: string = "";
+  public idCanvas: number = 0;
   branches: BranchesData[];
   labelsBranches: Array<string> = [];
   ordersBranches: Array<string> = [];
@@ -34,11 +36,11 @@ export class MetricsComponent implements OnInit {
                             'rgb(219, 217, 36)',
                             'rgb(0, 255, 201)'];
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService
+    public route: ActivatedRoute,
+    public router: Router,
+    public authService: AuthService
   ) {
-     
+    this.idCanvas=0;
   }
 
   ngOnInit() {
@@ -156,10 +158,147 @@ export class MetricsComponent implements OnInit {
       }
     });
 
+    var myChart4= new Chart("myChart4", {
+      type: 'bar',
+      data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+              label: '# of Votes',
+              data: [12, 3, 5, 2, 3],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 2
+          },
+          {
+            label: '# of Votes 2',
+            data: [15, 19, 3, 5, 2, 3],
+            backgroundColor: [
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  stacked: true,
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }],
+              xAxes: [{
+                stacked: true
+              }]
+          },
+          onClick: function(e) {
+            var element = this.getElementAtEvent(e)[0];
+            var elementLabel = this.getElementsAtEvent(e);
+            var clickedIndexLabel = elementLabel[0]["_index"];
+            var data = element._chart.data;
+            var clickedIndex = element._datasetIndex;
+            var label = myChart4.data.labels[clickedIndexLabel];
+            var value = data.datasets[clickedIndex].data[element._index];
+            console.log("ESTOY :" + label + " " + value);
+
+            localStorage.setItem('DataLabelChart', label);
+            localStorage.setItem('DataChart', value);
+            myRouter.navigate(['/admin']);
+            /*setTimeout(() => {
+              myRouter.navigate(['/admin']);
+            },
+              5000);*/
+            
+          }
+      }
+    });
+
     //Se puede sacar todo con el .config.etc
     //console.log(myChart2.config.type);
 
     
+  }
+
+  appendElement(){
+    this.idCanvas = this.idCanvas + 1;
+    console.log(this.idCanvas);
+    var myRouter = this.router;
+    let myCanvasExample = document.createElement('canvas');
+    myCanvasExample.setAttribute("id", "myCanvasExample"+this.idCanvas);
+    document.getElementById('addElement').appendChild(myCanvasExample);
+    var myChart = new Chart("myCanvasExample"+this.idCanvas, {
+      type: 'bar',
+      data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+              label: '# of Votes',
+              data: [this.idCanvas, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          },
+          onClick: function(e) {
+            var element = this.getElementsAtEvent(e);
+            if (element.length>0) {
+               var clickedIndex = element[0]["_index"];
+               console.log(myChart.data.labels[clickedIndex]+" "+ myChart.data.datasets[0].data[clickedIndex]);
+               myRouter.navigate(['/admin']);
+               localStorage.setItem('DataLabelChart', myChart.data.labels[clickedIndex]);
+               localStorage.setItem('DataChart', myChart.data.datasets[0].data[clickedIndex]);
+            }
+          }
+      }
+  });
   }
 
   logout() {
