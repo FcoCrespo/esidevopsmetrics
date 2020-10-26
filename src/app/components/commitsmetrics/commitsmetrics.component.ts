@@ -219,7 +219,7 @@ export class CommitsmetricsComponent implements OnInit {
           if (element.length>0) {
              var clickedIndex = element[0]["_index"];
              console.log(myChart.data.labels[clickedIndex]+" "+ myChart.data.datasets[0].data[clickedIndex]);
-             myRouter.navigate(['/admin']);
+             myRouter.navigate(['/commitsauthor']);
              localStorage.setItem('DataLabelChart', myChart.data.labels[clickedIndex]);
              localStorage.setItem('DataChart', myChart.data.datasets[0].data[clickedIndex]);
           }
