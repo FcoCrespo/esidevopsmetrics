@@ -5,6 +5,12 @@ import { AlertService } from 'src/app/services/alert.service';
 import { CommitService } from 'src/app/services/commit.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+export interface BranchesData {
+  idGithub:string;  
+  repository: string;
+  name: string;
+  order: string;
+}
 
 export interface CommitsData {
   id:string;
@@ -26,17 +32,23 @@ export interface CommitsData {
 }
 
 @Component({
-  selector: 'app-commits',
-  templateUrl: './commits.component.html',
-  styleUrls: ['./commits.component.css']
+  selector: 'app-commitsauthor',
+  templateUrl: './commitsauthor.component.html',
+  styleUrls: ['./commitsauthor.component.css']
 })
+export class CommitsauthorComponent implements OnInit {
 
-export class CommitsComponent implements OnInit {
   data: CommitsData[];
   commits: CommitsData[] = [];
   public commitsLenght : number = 0;
-  
 
+  branch: BranchesData;
+
+  public username: string = null;
+  public password: string = null;
+  public role: string = null;
+
+  public authorName: string = null;
   
 
   constructor(private commitService : CommitService,
@@ -44,10 +56,27 @@ export class CommitsComponent implements OnInit {
               private router: Router,
               private authService: AuthService) { 
 
-    }
+              var values = JSON.parse(localStorage.getItem("currentUser"));
+              this.username = values.username;
+              this.password = values.password;
+              this.role = values.role;
+              this.branch = JSON.parse(localStorage.getItem("BranchData"));
+              this.authorName = localStorage.getItem("DataLabelChart");
+  }
 
   ngOnInit() {
-    this.commitService.getCommitsBranch('admin', 'admin', '1.1-stable', 'redmine', 'FcoCrespo')
+    var owner = "";
+
+    if(this.branch.repository.localeCompare("eSalud")==0){
+      console.log("entro en sherrerap");
+      owner='sherrerap';
+    }
+    else{
+      console.log("entro en crespo");
+      owner='FcoCrespo';
+    }
+
+    this.commitService.getCommitsBranchAuthor(this.username, this.password, this.branch.name, this.authorName, this.branch.repository, owner)
       .subscribe((data: CommitsData[]) => {
         this.data = data;
         this.commitsLenght = data.length;
@@ -57,11 +86,9 @@ export class CommitsComponent implements OnInit {
           
           if(this.commits[i].authoredDate!=null){
             var dateCommit = this.setDateTime(this.commits[i].authoredDate);
-            console.log(dateCommit);
           }
           else{
             var dateCommit = this.setDateTime(this.commits[i].pushedDate);
-            console.log(dateCommit);
           }
           document.getElementById("buscador").style.visibility = "visible";
           document.getElementById("totalCommits").style.visibility = "visible";

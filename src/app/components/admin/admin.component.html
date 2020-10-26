@@ -1,5 +1,4 @@
 <h1 id="repositoryname" style="visibility: hidden">BRANCHES OF {{repositoryName.toUpperCase()}} REPOSITORY</h1>
 <ul>
-    <li class="branches" (click)="clickEvent()" *ngFor="let branch of branches;" id={{branch.name}}>{{branch.name}}</li>
+    <li class="branches" (click)="clickEvent(branch)" *ngFor="let branch of branches;" id={{branch.name}}>{{branch.name}}</li>
 </ul>
-<p (click)="clickBranch()">{{getChartData}}</p>

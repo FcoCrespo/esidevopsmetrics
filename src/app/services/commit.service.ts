@@ -17,5 +17,9 @@ export class CommitService {
   getCommitsBranch(username, password, branch, reponame, owner){
     return this.http.get<any[]>(`${environment.apiUrl}/commits/commitsbranch?username=${username}&password=${password}&branch=${branch}&reponame=${reponame}&owner=${owner}`);
   }
+
+  getCommitsBranchAuthor(username, password, branch, authorName, reponame, owner){
+    return this.http.get<any[]>(`${environment.apiUrl}/commits/commitsbranchauthor?username=${username}&password=${password}&branch=${branch}&reponame=${reponame}&authorName=${authorName}&owner=${owner}`);
+  }
     
 }

@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 @Pipe({
   name: 'filter'
@@ -28,9 +29,11 @@ export class FilterPipe implements PipeTransform {
         return rtItems;
       }
     }
+    
     /*if(!texto){
       return lista;
     }
+
     if(lista.filter(commit => commit.oid.toUpperCase().includes(texto.toUpperCase()))){
       console.log(lista.filter(commit => commit.oid.toUpperCase().includes(texto.toUpperCase())))
       localStorage.setItem('commitsFilter', JSON.stringify(lista.filter(commit => commit.oid.toUpperCase().includes(texto.toUpperCase()))));

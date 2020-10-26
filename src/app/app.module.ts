@@ -30,6 +30,8 @@ import { registerLocaleData } from '@angular/common';
 import localeES from '@angular/common/locales/es';
 import { SearchcommitsComponent } from './components/searchcommits/searchcommits.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { CommitsmetricsComponent } from './components/commitsmetrics/commitsmetrics.component';
+import { CommitsauthorComponent } from './components/commitsauthor/commitsauthor.component';
 
 
 
@@ -46,7 +48,9 @@ registerLocaleData(localeES, 'es');
     MetricsComponent,
     CommitsComponent,
     SearchcommitsComponent,
-    FilterPipe
+    FilterPipe,
+    CommitsmetricsComponent,
+    CommitsauthorComponent
   ],
   imports: [
     BrowserModule,

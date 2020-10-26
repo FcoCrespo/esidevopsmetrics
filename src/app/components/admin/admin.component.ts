@@ -11,6 +11,7 @@ export interface BranchesData {
   name: string;
   order: string;
 }
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -76,14 +77,10 @@ export class AdminComponent implements OnInit {
     return this.chartData;
   }
 
-  clickEvent(){
-    this.router.navigate(['/metrics']);      
+  clickEvent(branch: BranchesData){
+    localStorage.setItem('BranchData', JSON.stringify(branch));
+    this.router.navigate(['/commitsmetrics']);      
   }
-
-  clickBranch(){
-    this.router.navigate(['/commits']);      
-  }
-
 
   logout() {
     this.authService.logout();
