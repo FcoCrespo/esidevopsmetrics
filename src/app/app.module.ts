@@ -33,6 +33,8 @@ import { FilterPipe } from './pipes/filter.pipe';
 
 
 
+
+
 registerLocaleData(localeES, 'es');
 
 @NgModule({

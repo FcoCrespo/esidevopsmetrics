@@ -26,6 +26,7 @@ export class AdminComponent implements OnInit {
   public names: string = null;
   public chartData: string = null;
   public branchesLenght : number = 0;
+  public repositoryName : string = "";
 
   constructor(private commitService : CommitService,
               private route: ActivatedRoute,
@@ -53,6 +54,8 @@ export class AdminComponent implements OnInit {
         this.branchesLenght = data.length;
         this.branches = this.data;
         localStorage.setItem('branches', JSON.stringify(this.branches));
+        this.repositoryName = this.branches[0].repository;
+        document.getElementById("repositoryname").style.visibility = "visible";
     });
 
   }

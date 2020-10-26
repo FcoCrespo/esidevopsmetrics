@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { CommitService } from 'src/app/services/commit.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NONE_TYPE } from '@angular/compiler';
 
 export interface CommitsData {
   id:string;
@@ -63,6 +64,7 @@ export class CommitsComponent implements OnInit {
             console.log(dateCommit);
           }
           document.getElementById("buscador").style.visibility = "visible";
+          document.getElementById("totalCommits").style.visibility = "visible";
         }
         
 
@@ -74,9 +76,9 @@ export class CommitsComponent implements OnInit {
 
     const time = pipe.transform(dateTime, 'mediumTime', 'UTC');
 
-    const date = pipe.transform(dateTime, 'dd/MMMM/yyyy', 'UTC');
+    const date = pipe.transform(dateTime, 'dd MMMM yyyy', 'UTC');
 
-    return date + ' ' + time;
+    return date + ' Hour: ' + time;
   }
 
   handleSearch(value: string){
@@ -94,4 +96,16 @@ export class CommitsComponent implements OnInit {
       document.querySelector('.showInputField').appendChild(row); 
   }
 
+  totalCommits(){
+    return this.commitsLenght;
+  }
+  commitDate(commit: CommitsData){
+
+    if(commit.authoredDate==null){
+      return this.setDateTime(commit.pushedDate);
+    }
+    else{
+      return this.setDateTime(commit.authoredDate);
+    }
+  }
 }

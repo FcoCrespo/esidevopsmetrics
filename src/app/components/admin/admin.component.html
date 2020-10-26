@@ -1,6 +1,4 @@
-<p>admin works!</p>
-<p>{{getUsername}}</p>
-<p>{{getPassword}}</p>
+<h1 id="repositoryname" style="visibility: hidden">BRANCHES OF {{repositoryName.toUpperCase()}} REPOSITORY</h1>
 <ul>
     <li class="branches" (click)="clickEvent()" *ngFor="let branch of branches;" id={{branch.name}}>{{branch.name}}</li>
 </ul>
