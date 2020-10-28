@@ -47,7 +47,7 @@ export class CommitsComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.commitService.getCommitsBranch('admin', 'admin', '1.1-stable', 'redmine', 'FcoCrespo')
+    this.commitService.getCommitsBranch('admin', '1.1-stable', 'redmine', 'FcoCrespo')
       .subscribe((data: CommitsData[]) => {
         this.data = data;
         this.commitsLenght = data.length;

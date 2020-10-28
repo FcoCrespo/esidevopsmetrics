@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
     get f() { return this.loginForm.controls; }
 
     onSubmit() {
+        document.getElementById('botonAcceso').setAttribute("disabled","disabled");
         this.submitted = true;
 
         // resetea las alarmas al acceder
@@ -53,6 +54,7 @@ export class LoginComponent implements OnInit {
 
         // para si el form es inválido
         if (this.loginForm.invalid) {
+            document.getElementById('botonAcceso').removeAttribute("disabled");
             return;
         }
 
@@ -68,6 +70,7 @@ export class LoginComponent implements OnInit {
                     }
                 },
                 error => {
+                    document.getElementById('botonAcceso').removeAttribute("disabled");
                     this.error = "Error: No se ha encontrado ningún usuario con esos datos.";
                     this.loading = false;
                 });

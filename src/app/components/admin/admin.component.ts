@@ -22,7 +22,7 @@ export class AdminComponent implements OnInit {
   data: BranchesData[];
   branches: BranchesData[] = [];
   public username: string = null;
-  public password: string = null;
+  public tokenpass: string = null;
   public role: string = null;
   public names: string = null;
   public chartData: string = null;
@@ -35,7 +35,8 @@ export class AdminComponent implements OnInit {
               private authService: AuthService) {
     var values = JSON.parse(localStorage.getItem("currentUser"));
     this.username = values.username;
-    this.password = values.password;
+    this.tokenpass = values.tokenPass;
+    console.log(this.tokenpass);
     this.role = values.role;
     this.names = "BRANCHES \n";
     this.branchesLenght = 0;
@@ -48,7 +49,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
 
     document.body.classList.add('bg-img-white');
-    this.commitService.getBranches(this.username, this.password, 'redmine', 'FcoCrespo')
+    this.commitService.getBranches(this.tokenpass, 'redmine', 'FcoCrespo')
       .subscribe((data: BranchesData[]) => {
         this.data = data;
         console.log(this.data);
@@ -63,10 +64,6 @@ export class AdminComponent implements OnInit {
 
   get getUsername(): string {
     return this.username;
-  }
-
-  get getPassword(): string {
-    return this.password;
   }
 
   get getRole(): string {
@@ -84,6 +81,7 @@ export class AdminComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    document.body.classList.add('bg-img');
     this.router.navigate(['/login']);
   }
 

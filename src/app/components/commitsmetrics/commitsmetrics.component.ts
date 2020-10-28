@@ -49,7 +49,7 @@ export class CommitsmetricsComponent implements OnInit {
   public commitsLenght: number = 0;
 
   public username: string = null;
-  public password: string = null;
+  public tokenpass: string = null;
   public role: string = null;
 
   labelsCommitsDate: Array<string> = [];
@@ -86,7 +86,7 @@ export class CommitsmetricsComponent implements OnInit {
     console.log(this.branch);
     var values = JSON.parse(localStorage.getItem("currentUser"));
     this.username = values.username;
-    this.password = values.password;
+    this.tokenpass = values.tokenPass;
     this.role = values.role;
 
     var owner = "";
@@ -100,7 +100,7 @@ export class CommitsmetricsComponent implements OnInit {
       owner='FcoCrespo';
     }
 
-    this.commitService.getCommitsBranch(this.username, this.password, this.branch.name, this.branch.repository, owner)
+    this.commitService.getCommitsBranch(this.tokenpass, this.branch.name, this.branch.repository, owner)
       .subscribe((data: CommitsData[]) => {
         this.data = data;
         this.commitsLenght = data.length; 

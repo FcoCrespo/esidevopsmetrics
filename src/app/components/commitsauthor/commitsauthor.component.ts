@@ -45,7 +45,7 @@ export class CommitsauthorComponent implements OnInit {
   branch: BranchesData;
 
   public username: string = null;
-  public password: string = null;
+  public tokenpass: string = null;
   public role: string = null;
 
   public authorName: string = null;
@@ -58,7 +58,7 @@ export class CommitsauthorComponent implements OnInit {
 
               var values = JSON.parse(localStorage.getItem("currentUser"));
               this.username = values.username;
-              this.password = values.password;
+              this.tokenpass = values.tokenPass;
               this.role = values.role;
               this.branch = JSON.parse(localStorage.getItem("BranchData"));
               this.authorName = localStorage.getItem("DataLabelChart");
@@ -76,7 +76,7 @@ export class CommitsauthorComponent implements OnInit {
       owner='FcoCrespo';
     }
 
-    this.commitService.getCommitsBranchAuthor(this.username, this.password, this.branch.name, this.authorName, this.branch.repository, owner)
+    this.commitService.getCommitsBranchAuthor(this.tokenpass, this.branch.name, this.authorName, this.branch.repository, owner)
       .subscribe((data: CommitsData[]) => {
         this.data = data;
         this.commitsLenght = data.length;

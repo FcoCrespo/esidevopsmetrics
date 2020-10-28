@@ -10,16 +10,16 @@ export class CommitService {
   currentUserSubject: any;
   constructor(private http: HttpClient) { }
 
-  getBranches(username, password, reponame, owner) {
-      return this.http.get<any[]>(`${environment.apiUrl}/commits/allbranches?username=${username}&password=${password}&reponame=${reponame}&owner=${owner}`);
+  getBranches(tokenpass, reponame, owner) {
+      return this.http.get<any[]>(`${environment.apiUrl}/commits/allbranches?tokenpass=${tokenpass}&reponame=${reponame}&owner=${owner}`);
   }
 
-  getCommitsBranch(username, password, branch, reponame, owner){
-    return this.http.get<any[]>(`${environment.apiUrl}/commits/commitsbranch?username=${username}&password=${password}&branch=${branch}&reponame=${reponame}&owner=${owner}`);
+  getCommitsBranch(tokenpass, branch, reponame, owner){
+    return this.http.get<any[]>(`${environment.apiUrl}/commits/commitsbranch?tokenpass=${tokenpass}&branch=${branch}&reponame=${reponame}&owner=${owner}`);
   }
 
-  getCommitsBranchAuthor(username, password, branch, authorName, reponame, owner){
-    return this.http.get<any[]>(`${environment.apiUrl}/commits/commitsbranchauthor?username=${username}&password=${password}&branch=${branch}&reponame=${reponame}&authorName=${authorName}&owner=${owner}`);
+  getCommitsBranchAuthor(tokenpass, branch, authorname, reponame, owner){
+    return this.http.get<any[]>(`${environment.apiUrl}/commits/commitsbranchauthor?tokenpass=${tokenpass}&branch=${branch}&reponame=${reponame}&authorname=${authorname}&owner=${owner}`);
   }
     
 }

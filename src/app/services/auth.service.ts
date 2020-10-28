@@ -11,7 +11,10 @@ export class AuthService {
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
 
+    
+
     constructor(private http: HttpClient, private router: Router) {
+        document.body.classList.add('bg-img');
         this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -37,6 +40,7 @@ export class AuthService {
         // elimina al usuario del almacenamiento local y marca el usuario actual como nulo
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+        document.body.classList.add('bg-img');
         this.router.navigate(['/']);
     }
 }
