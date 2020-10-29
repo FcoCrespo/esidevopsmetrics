@@ -81,7 +81,6 @@ export class AdminComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    document.body.classList.add('bg-img');
     this.router.navigate(['/login']);
   }
 

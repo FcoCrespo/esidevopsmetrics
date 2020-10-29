@@ -40,7 +40,7 @@ export class AuthService {
         // elimina al usuario del almacenamiento local y marca el usuario actual como nulo
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
-        document.body.classList.add('bg-img');
+        document.body.classList.remove('bg-img-white');
         this.router.navigate(['/']);
     }
 }
