@@ -8,11 +8,11 @@
     <h2 class="login-header">DevOps Metrics</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-container">
         <div class="form-group">
-            <input type="UserName" placeholder="Usuario" id="username" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <input type="UserName" placeholder="usuario" id="username" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
             <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
                 <div *ngIf="f.username.errors.required">Debes introducir el nombre de usuario</div>
             </div>
-            <input type="password" placeholder="Contraseña" id="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <input type="password" placeholder="password" id="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                 <div *ngIf="f.password.errors.required">Debes introducir una Contraseña</div>
             </div>
