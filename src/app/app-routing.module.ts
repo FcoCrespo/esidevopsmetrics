@@ -12,9 +12,6 @@ import { LoginComponent } from './components/login/login.component';
 
 import { AuthGuard } from './guards';
 
-import { from } from 'rxjs';
-
-
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },

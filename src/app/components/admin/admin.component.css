@@ -2,6 +2,3 @@ li.branches { cursor: pointer; }
 li.branches:hover {
     text-decoration: underline;
 }
-li.branches:unhover {
-    text-decoration: none;
-}

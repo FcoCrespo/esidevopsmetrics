@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
 
 @Pipe({
   name: 'filter'
@@ -10,24 +9,22 @@ export class FilterPipe implements PipeTransform {
     if (!items) return [];
     if (typeof field == 'string') {
       let rtItems: any = items;
-      try {
-        rtItems = items.filter(it => it[field].toLowerCase().indexOf(value.toLowerCase()) > -1);
-      } finally {
-        return rtItems;
-      }
+      rtItems = items.filter(it => it[field].toLowerCase().indexOf(value.toLowerCase()) > -1);
+      return rtItems;
+      
     } else {
       let rtItems: any = items;
-      try {
-        rtItems = items.filter(it => {
-          for (let f of field) {
-            if (it[f].toLowerCase().indexOf(value.toLowerCase()) > -1) {
-              return true;
-            }
+    
+      rtItems = items.filter(it => {
+        for (let f of field) {
+          if (it[f].toLowerCase().indexOf(value.toLowerCase()) > -1) {
+            return true;
           }
-        });
-      } finally {
-        return rtItems;
-      }
+        }
+      });
+      
+      return rtItems;
+      
     }
     
     /*if(!texto){

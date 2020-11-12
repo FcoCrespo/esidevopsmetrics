@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { AlertService } from 'src/app/services/alert.service';
 import { CommitService } from 'src/app/services/commit.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -27,8 +26,7 @@ export interface CommitsData {
 
 @Component({
   selector: 'app-commits',
-  templateUrl: './commits.component.html',
-  styleUrls: ['./commits.component.css']
+  templateUrl: './commits.component.html'
 })
 
 export class CommitsComponent implements OnInit {
@@ -53,14 +51,15 @@ export class CommitsComponent implements OnInit {
         this.commitsLenght = data.length;
         console.log(this.commitsLenght);
         this.commits = this.data;
+        var dateCommit;
         for(var i = 0; i<this.commitsLenght; i++){
           
           if(this.commits[i].authoredDate!=null){
-            var dateCommit = this.setDateTime(this.commits[i].authoredDate);
+            dateCommit = this.setDateTime(this.commits[i].authoredDate);
             console.log(dateCommit);
           }
           else{
-            var dateCommit = this.setDateTime(this.commits[i].pushedDate);
+            dateCommit = this.setDateTime(this.commits[i].pushedDate);
             console.log(dateCommit);
           }
           document.getElementById("buscador").style.visibility = "visible";

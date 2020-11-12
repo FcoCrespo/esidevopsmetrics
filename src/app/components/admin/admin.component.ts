@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { AlertService } from 'src/app/services/alert.service';
 import { CommitService } from 'src/app/services/commit.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
