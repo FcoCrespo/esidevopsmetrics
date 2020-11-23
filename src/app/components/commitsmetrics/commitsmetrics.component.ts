@@ -15,19 +15,12 @@ export interface BranchesData {
 
 export interface CommitsData {
   id:string;
-  idGithub:string;
   oid:string;
   messageHeadline:string;
   message:string;
-  messageBody:string;
   pushedDate:DatePipe;
   changedFiles:number;
-  authoredByCommitter:string;
-  authoredDate:DatePipe;
   authorName:string;
-  authorEmail:string;
-  authorDate:string;
-  authorId:string;
   branch:string;
   repository:string;
 }

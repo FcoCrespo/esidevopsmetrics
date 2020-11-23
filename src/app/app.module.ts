@@ -21,7 +21,6 @@ import { AlertComponent } from './components/alert/alert.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { MetricsComponent } from './components/metrics/metrics.component';
-import { CommitsComponent } from './components/commits/commits.component';
 
 
 /*Angular local ES*/
@@ -46,7 +45,6 @@ registerLocaleData(localeES, 'es');
     AdminComponent,
     LoginComponent,
     MetricsComponent,
-    CommitsComponent,
     SearchcommitsComponent,
     FilterPipe,
     CommitsmetricsComponent,

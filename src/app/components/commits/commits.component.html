@@ -1,8 +1,0 @@
-<h1 id="totalCommits" style="visibility: hidden">TOTAL DE COMMITS: {{totalCommits()}}</h1>
-<div id="buscador" style="visibility: hidden"><app-searchcommits (search)="handleSearch($event)"></app-searchcommits></div>
-<ul>
-    <li *ngFor="let commit of commits | filter:['oid','authorName']:filtro_valor">ID: {{ commit.oid }}<br>Author: {{ commit.authorName }}<br>Date: {{ commitDate(commit) }}</li>
-</ul>
-
-<button (click)="mostrarResultados()">MOSTRAR RESULTADOS</button>
-<div class="showInputField"></div> 

@@ -13,19 +13,12 @@ export interface BranchesData {
 
 export interface CommitsData {
   id:string;
-  idGithub:string;
   oid:string;
   messageHeadline:string;
   message:string;
-  messageBody:string;
   pushedDate:DatePipe;
   changedFiles:number;
-  authoredByCommitter:string;
-  authoredDate:DatePipe;
   authorName:string;
-  authorEmail:string;
-  authorDate:string;
-  authorId:string;
   branch:string;
   repository:string;
 }
@@ -80,15 +73,7 @@ export class CommitsauthorComponent implements OnInit {
         this.commitsLenght = data.length;
         console.log(this.commitsLenght);
         this.commits = this.data;
-        var dateCommit;
         for(var i = 0; i<this.commitsLenght; i++){
-          
-          if(this.commits[i].authoredDate!=null){
-            dateCommit = this.setDateTime(this.commits[i].authoredDate);
-          }
-          else{
-            dateCommit = this.setDateTime(this.commits[i].pushedDate);
-          }
           document.getElementById("buscador").style.visibility = "visible";
           document.getElementById("totalCommits").style.visibility = "visible";
         }
@@ -125,13 +110,9 @@ export class CommitsauthorComponent implements OnInit {
   totalCommits(){
     return this.commitsLenght;
   }
-  commitDate(commit: CommitsData){
 
-    if(commit.authoredDate==null){
-      return this.setDateTime(commit.pushedDate);
-    }
-    else{
-      return this.setDateTime(commit.authoredDate);
-    }
+  commitDate(commit: CommitsData){
+    return this.setDateTime(commit.pushedDate); 
   }
+  
 }
