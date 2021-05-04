@@ -3,7 +3,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CommitService } from 'src/app/services/commit.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
-
 export interface BranchesData {
   idGithub:string;  
   repository: string;
@@ -18,21 +17,27 @@ export interface BranchesData {
 })
 
 export class AdminComponent implements OnInit {
+
   data: BranchesData[];
   branches: BranchesData[] = [];
   public username: string = null;
   public tokenpass: string = null;
+  public repositoryName : string = null;
+  public owner : string = null;
   public role: string = null;
   public names: string = null;
   public chartData: string = null;
   public branchesLenght : number = 0;
-  public repositoryName : string = "";
+  
 
   constructor(private commitService : CommitService,
               private route: ActivatedRoute,
               private router: Router,
               private authService: AuthService) {
     var values = JSON.parse(localStorage.getItem("currentUser"));
+    var repository = JSON.parse(localStorage.getItem("RepositoryData"));
+    this.repositoryName = repository.repository;
+    this.owner = repository.owner;
     this.username = values.username;
     this.tokenpass = values.tokenPass;
     console.log(this.tokenpass);
@@ -48,7 +53,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
 
     document.body.classList.add('bg-img-white');
-    this.commitService.getBranches(this.tokenpass, 'redmine', 'FcoCrespo')
+    this.commitService.getBranches(this.tokenpass, this.repositoryName, this.owner)
       .subscribe((data: BranchesData[]) => {
         this.data = data;
         console.log(this.data);

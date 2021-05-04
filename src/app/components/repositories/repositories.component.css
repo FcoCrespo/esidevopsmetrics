@@ -1,0 +1,4 @@
+li.repositories { cursor: pointer; }
+li.repositories:hover {
+    text-decoration: underline;
+}

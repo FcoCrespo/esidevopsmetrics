@@ -31,6 +31,7 @@ import { SearchcommitsComponent } from './components/searchcommits/searchcommits
 import { FilterPipe } from './pipes/filter.pipe';
 import { CommitsmetricsComponent } from './components/commitsmetrics/commitsmetrics.component';
 import { CommitsauthorComponent } from './components/commitsauthor/commitsauthor.component';
+import { RepositoriesComponent } from './components/repositories/repositories.component';
 
 
 
@@ -48,7 +49,8 @@ registerLocaleData(localeES, 'es');
     SearchcommitsComponent,
     FilterPipe,
     CommitsmetricsComponent,
-    CommitsauthorComponent
+    CommitsauthorComponent,
+    RepositoriesComponent
   ],
   imports: [
     BrowserModule,

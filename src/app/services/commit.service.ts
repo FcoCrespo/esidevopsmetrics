@@ -10,6 +10,11 @@ export class CommitService {
   currentUserSubject: any;
   constructor(private http: HttpClient) { }
 
+
+  getRepositories(tokenpass) {
+    return this.http.get<any[]>(`${environment.apiUrl}/commits/allrepositories?tokenpass=${tokenpass}`);
+  }
+
   getBranches(tokenpass, reponame, owner) {
       return this.http.get<any[]>(`${environment.apiUrl}/commits/allbranches?tokenpass=${tokenpass}&reponame=${reponame}&owner=${owner}`);
   }

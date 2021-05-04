@@ -1,0 +1,5 @@
+<h1>REPOSITORIES OF DEVOPSMETRICS PROJECT</h1>
+<ul>
+    <li class="repositories" (click)="clickEvent(repository)" *ngFor="let repository of repositories;" id={{repository.repository}}>Repository: {{repository.repository}} , Owner: {{repository.owner}}</li>
+</ul>
+<button (click)=logout()>Salir</button>

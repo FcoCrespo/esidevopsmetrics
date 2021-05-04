@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        
         document.body.classList.add('bg-img');
         //esto desloguea el usuario antes de empezar el proceso
         this.authService.logout();
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
                 data => {
                     switch (this.authService.currentUserValue.role) {
                         case "admin": {
-                            this.router.navigate(['/admin']);
+                            this.router.navigate(['/repositories']);
                             break;
                         }
                     }
@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
         if (this.authService.currentUserValue) {
             switch (this.authService.currentUserValue.role) {
                 case "admin": {
-                    this.router.navigate(['/admin']);
+                    this.router.navigate(['/repositories']);
                     break;
                 }
             }
