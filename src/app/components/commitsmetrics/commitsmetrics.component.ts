@@ -123,9 +123,11 @@ export class CommitsmetricsComponent implements OnInit {
   obtenerLabelsCommitsAuthor(){
     var labelsCommitsAuthoraux = [];
     for(var i=0; i<this.commitsLenght; i++){
-      if( labelsCommitsAuthoraux[this.commits[i].authorName]) continue;
-      labelsCommitsAuthoraux[this.commits[i].authorName] = true;
-      this.labelsCommitsAuthor.push(this.commits[i].authorName);
+      if(this.commits[i].authorName !== undefined){
+        if( labelsCommitsAuthoraux[this.commits[i].authorName]) continue;
+        labelsCommitsAuthoraux[this.commits[i].authorName] = true;
+        this.labelsCommitsAuthor.push(this.commits[i].authorName);
+      } 
     }
   }
 
@@ -134,10 +136,11 @@ export class CommitsmetricsComponent implements OnInit {
     
     for(var j = 0; j<this.labelsCommitsAuthor.length; j++){
       for(var i=0; i<this.commitsLenght; i++){
-        if(this.commits[i].authorName.localeCompare(this.labelsCommitsAuthor[j])==0){
-          cont=cont+1;
-        }
-        
+        if(this.commits[i].authorName !== undefined && this.labelsCommitsAuthor[j] !== undefined){
+          if(this.commits[i].authorName.localeCompare(this.labelsCommitsAuthor[j])==0){
+            cont=cont+1;
+          }
+        }            
       }
       this.numCommitsAuthor.push(cont);
       cont=0;
