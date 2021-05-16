@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'metrics', component: MetricsComponent, canActivate: [AuthGuard] },
   { path: 'commitsauthor', component: CommitsauthorComponent, canActivate: [AuthGuard] },
   { path: 'commitsmetrics', component: CommitsmetricsComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({

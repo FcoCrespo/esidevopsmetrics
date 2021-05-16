@@ -56,6 +56,7 @@ export class CommitsauthorComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.body.classList.add('bg-img-white');
     var owner = "";
 
     if(this.branch.repository.localeCompare("eSalud")==0){

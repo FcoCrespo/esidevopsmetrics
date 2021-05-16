@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import {DecimalPipe} from '@angular/common';
+
 /*Angular material*/
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -32,6 +34,7 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { CommitsmetricsComponent } from './components/commitsmetrics/commitsmetrics.component';
 import { CommitsauthorComponent } from './components/commitsauthor/commitsauthor.component';
 import { RepositoriesComponent } from './components/repositories/repositories.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -61,12 +64,15 @@ registerLocaleData(localeES, 'es');
     HttpClientModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'es' }],
+    { provide: LOCALE_ID, useValue: 'es' },
+    DecimalPipe
+  ],
     
   bootstrap: [AppComponent]
 })

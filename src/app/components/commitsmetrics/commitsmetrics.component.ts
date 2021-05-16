@@ -1,39 +1,62 @@
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommitService } from 'src/app/services/commit.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Chart } from 'node_modules/chart.js';
-
+import { SBSortableHeaderDirective, SortEvent } from 'src/app/modules/tables/directives';
+import { Country } from 'src/app/modules/tables/models';
+import { CountryService } from 'src/app/modules/tables/services';
+import { Observable } from 'rxjs';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser';
 
 export interface BranchesData {
-  idGithub:string;  
+  idGithub: string;
   repository: string;
   name: string;
   order: string;
 }
 
 export interface CommitsData {
-  id:string;
-  oid:string;
-  messageHeadline:string;
-  message:string;
-  pushedDate:DatePipe;
-  changedFiles:number;
-  authorName:string;
-  branch:string;
-  repository:string;
+  id: string;
+  oid: string;
+  messageHeadline: string;
+  message: string;
+  pushedDate: DatePipe;
+  changedFiles: number;
+  authorName: string;
+  branch: string;
+  repository: string;
 }
 
 @Component({
   selector: 'app-commitsmetrics',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './commitsmetrics.component.html',
   styleUrls: ['./commitsmetrics.component.css']
 })
 export class CommitsmetricsComponent implements OnInit {
 
+  @Input() pageSize = 4;
+
+  countries$!: Observable<Country[]>;
+  total$!: Observable<number>;
+  sortedColumn!: string;
+  sortedDirection!: string;
+
+  @ViewChildren(SBSortableHeaderDirective) headers!: QueryList<SBSortableHeaderDirective>;
+
   public idCanvas: number = 0;
-  
+
   branch: BranchesData;
   data: CommitsData[];
   commits: CommitsData[] = [];
@@ -53,27 +76,34 @@ export class CommitsmetricsComponent implements OnInit {
   ordersBranches: Array<string> = [];
   colorsCommits: Array<string> = [];
   charts: Array<Chart> = [];
-  colors: Array<string> = [ 'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
-                            'rgb(255, 206, 86)',
-                            'rgb(75, 192, 192)',
-                            'rgb(153, 102, 255)',
-                            'rgb(255, 159, 64)',
-                            'rgb(255, 0, 54)',
-                            'rgb(219, 217, 36)',
-                            'rgb(0, 255, 201)'];
+  colors: Array<string> = ['rgb(255, 99, 132)',
+    'rgb(54, 162, 235)',
+    'rgb(255, 206, 86)',
+    'rgb(75, 192, 192)',
+    'rgb(153, 102, 255)',
+    'rgb(255, 159, 64)',
+    'rgb(255, 0, 54)',
+    'rgb(219, 217, 36)',
+    'rgb(0, 255, 201)'];
 
 
   constructor(
-    private commitService : CommitService,
+    private commitService: CommitService,
     public route: ActivatedRoute,
     public router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public countryService: CountryService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    this.idCanvas=0;
+    this.idCanvas = 0;
   }
 
   ngOnInit() {
+
+    this.countryService.pageSize = this.pageSize;
+    this.countries$ = this.countryService.countries$;
+    this.total$ = this.countryService.total$;
+
     this.branch = JSON.parse(localStorage.getItem("BranchData"));
     console.log(this.branch);
     var values = JSON.parse(localStorage.getItem("currentUser"));
@@ -83,19 +113,19 @@ export class CommitsmetricsComponent implements OnInit {
 
     var owner = "";
 
-    if(this.branch.repository.localeCompare("eSalud")==0){
+    if (this.branch.repository.localeCompare("eSalud") == 0) {
       console.log("entro en sherrerap");
-      owner='sherrerap';
+      owner = 'sherrerap';
     }
-    else{
+    else {
       console.log("entro en crespo");
-      owner='FcoCrespo';
+      owner = 'FcoCrespo';
     }
 
     this.commitService.getCommitsBranch(this.tokenpass, this.branch.name, this.branch.repository, owner)
       .subscribe((data: CommitsData[]) => {
         this.data = data;
-        this.commitsLenght = data.length; 
+        this.commitsLenght = data.length;
         this.commits = this.data;
         console.log(this.commitsLenght);
 
@@ -103,64 +133,72 @@ export class CommitsmetricsComponent implements OnInit {
         console.log(this.labelsCommitsAuthor);
         this.contarCommitsAuthor();
         console.log(this.numCommitsAuthor);
-        
+
         document.getElementById("commitsbranchauthor").style.visibility = "visible";
 
         var colores = 0;
-        for(var cont = 0; cont<this.labelsCommitsAuthor.length; cont++){
+        for (var cont = 0; cont < this.labelsCommitsAuthor.length; cont++) {
           this.colorsCommits.push(this.colors[colores])
           colores = colores + 1;
-          if(colores==this.colors.length){
-            colores=0;
+          if (colores == this.colors.length) {
+            colores = 0;
           }
         }
         this.crearCanvasBarCommitAuthor();
-        this.crearCanvasPieCommitAuthor();
-    });   
-    
+        //this.crearCanvasPieCommitAuthor();
+      });
+
   }
 
-  obtenerLabelsCommitsAuthor(){
+  onSort({ column, direction }: SortEvent) {
+    this.sortedColumn = column;
+    this.sortedDirection = direction;
+    this.countryService.sortColumn = column;
+    this.countryService.sortDirection = direction;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  obtenerLabelsCommitsAuthor() {
     var labelsCommitsAuthoraux = [];
-    for(var i=0; i<this.commitsLenght; i++){
-      if(this.commits[i].authorName !== undefined){
-        if( labelsCommitsAuthoraux[this.commits[i].authorName]) continue;
+    for (var i = 0; i < this.commitsLenght; i++) {
+      if (this.commits[i].authorName !== undefined) {
+        if (labelsCommitsAuthoraux[this.commits[i].authorName]) continue;
         labelsCommitsAuthoraux[this.commits[i].authorName] = true;
         this.labelsCommitsAuthor.push(this.commits[i].authorName);
-      } 
+      }
     }
   }
 
-  contarCommitsAuthor(){
+  contarCommitsAuthor() {
     var cont = 0;
-    
-    for(var j = 0; j<this.labelsCommitsAuthor.length; j++){
-      for(var i=0; i<this.commitsLenght; i++){
-        if(this.commits[i].authorName !== undefined && this.labelsCommitsAuthor[j] !== undefined){
-          if(this.commits[i].authorName.localeCompare(this.labelsCommitsAuthor[j])==0){
-            cont=cont+1;
+
+    for (var j = 0; j < this.labelsCommitsAuthor.length; j++) {
+      for (var i = 0; i < this.commitsLenght; i++) {
+        if (this.commits[i].authorName !== undefined && this.labelsCommitsAuthor[j] !== undefined) {
+          if (this.commits[i].authorName.localeCompare(this.labelsCommitsAuthor[j]) == 0) {
+            cont = cont + 1;
           }
-        }            
+        }
       }
       this.numCommitsAuthor.push(cont);
-      cont=0;
+      cont = 0;
     }
-    
+
   }
 
-  crearCanvasBarCommitAuthor(){
+  crearCanvasBarCommitAuthor() {
     this.idCanvas = this.idCanvas + 1;
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
-    myCanvasExample.setAttribute("id", "myChart"+this.idCanvas);
+    myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
     document.getElementById('divChart').appendChild(myCanvasExample);
     var myRouter = this.router;
-    var myChart = new Chart("myChart"+this.idCanvas, {
+    var myChart = new Chart("myChart" + this.idCanvas, {
       type: 'bar',
       data: {
         labels: this.labelsCommitsAuthor,
         datasets: [{
-          label: 'Number of Commits per Author in '+this.branch.name+' Branch ',
+          label: 'Number of Commits per Author in ' + this.branch.name + ' Branch ',
           data: this.numCommitsAuthor,
           backgroundColor: this.colorsCommits,
           borderColor: this.colorsCommits,
@@ -175,33 +213,33 @@ export class CommitsmetricsComponent implements OnInit {
             }
           }]
         },
-        onClick: function(e) {
+        onClick: function (e) {
           var element = this.getElementsAtEvent(e);
-          if (element.length>0) {
-             var clickedIndex = element[0]["_index"];
-             console.log(myChart.data.labels[clickedIndex]+" "+ myChart.data.datasets[0].data[clickedIndex]);
-             localStorage.setItem('DataLabelChart', myChart.data.labels[clickedIndex]);
-             localStorage.setItem('DataChart', myChart.data.datasets[0].data[clickedIndex]);
-             myRouter.navigate(['/commitsauthor']);
+          if (element.length > 0) {
+            var clickedIndex = element[0]["_index"];
+            console.log(myChart.data.labels[clickedIndex] + " " + myChart.data.datasets[0].data[clickedIndex]);
+            localStorage.setItem('DataLabelChart', myChart.data.labels[clickedIndex]);
+            localStorage.setItem('DataChart', myChart.data.datasets[0].data[clickedIndex]);
+            myRouter.navigate(['/commitsauthor']);
           }
         }
       }
     });
   }
 
-  crearCanvasPieCommitAuthor(){
+  crearCanvasPieCommitAuthor() {
     this.idCanvas = this.idCanvas + 1;
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
-    myCanvasExample.setAttribute("id", "myChart"+this.idCanvas);
+    myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
     document.getElementById('divChart').appendChild(myCanvasExample);
     var myRouter = this.router;
-    var myChart = new Chart("myChart"+this.idCanvas, {
+    var myChart = new Chart("myChart" + this.idCanvas, {
       type: 'doughnut',
       data: {
         labels: this.labelsCommitsAuthor,
         datasets: [{
-          label: 'Number of Commits per Author in '+this.branch.name+' Branch ',
+          label: 'Number of Commits per Author in ' + this.branch.name + ' Branch ',
           data: this.numCommitsAuthor,
           backgroundColor: this.colorsCommits,
           borderColor: 'rgb(255,255,255)',
@@ -209,14 +247,14 @@ export class CommitsmetricsComponent implements OnInit {
         }]
       },
       options: {
-        onClick: function(e) {
+        onClick: function (e) {
           var element = this.getElementsAtEvent(e);
-          if (element.length>0) {
-             var clickedIndex = element[0]["_index"];
-             console.log(myChart.data.labels[clickedIndex]+" "+ myChart.data.datasets[0].data[clickedIndex]);
-             myRouter.navigate(['/commitsauthor']);
-             localStorage.setItem('DataLabelChart', myChart.data.labels[clickedIndex]);
-             localStorage.setItem('DataChart', myChart.data.datasets[0].data[clickedIndex]);
+          if (element.length > 0) {
+            var clickedIndex = element[0]["_index"];
+            console.log(myChart.data.labels[clickedIndex] + " " + myChart.data.datasets[0].data[clickedIndex]);
+            myRouter.navigate(['/commitsauthor']);
+            localStorage.setItem('DataLabelChart', myChart.data.labels[clickedIndex]);
+            localStorage.setItem('DataChart', myChart.data.datasets[0].data[clickedIndex]);
           }
         }
       }
