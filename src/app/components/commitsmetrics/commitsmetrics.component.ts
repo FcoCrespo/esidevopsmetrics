@@ -148,7 +148,7 @@ export class CommitsmetricsComponent implements OnInit {
         this.crearCanvasPieCommitAuthor();
       });
 
-      document.getElementById("report").style.visibility = "visible";
+    document.getElementById("report").style.visibility = "visible";
 
   }
 
@@ -265,39 +265,43 @@ export class CommitsmetricsComponent implements OnInit {
     });
   }
 
-  async exportAsPDF()
-    {
-        let ids: Array<string>;
-        ids = ['myChart1', 'myChart2']; 
+  async exportAsPDF() {
+    let ids: Array<string>;
+    ids = ['myChart1', 'myChart2'];
 
-        const title = 'Number of Commits per Author in Branch ' + this.branch.name + '  from Repository '+ this.branch.repository;
-        
-        const doc = new jsPDF('p', 'mm', 'a4');
-        doc.text(title, 10, 10);
-        const options = {
-          pagesplit: true
-        };       
-        const length = ids.length;
-        for (let i = 0; i < length; i++) {
-          const chart = document.getElementById(ids[i]);
-          // excute this function then exit loop
-          await html2canvas(chart, { scale: 1 }).then(function (canvas) { 
-            doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
-            if (i < (length - 1)) {
-              doc.addPage();
-              doc.text(title, 10, 10);
-            }
-          });
+    const title = 'Number of Commits per Author in Branch ' + this.branch.name + '  from Repository ' + this.branch.repository;
+
+    const doc = new jsPDF('p', 'mm', 'a4');
+    doc.text(title, 10, 10);
+    const options = {
+      pagesplit: true
+    };
+    const length = ids.length;
+    for (let i = 0; i < length; i++) {
+      const chart = document.getElementById(ids[i]);
+      // excute this function then exit loop
+      await html2canvas(chart, {
+        scrollX: -window.scrollX,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.offsetWidth,
+        windowHeight: document.documentElement.offsetHeight
+      }).then(function (canvas) {
+        doc.addImage(canvas.toDataURL('image/png'), 'PNG', 25, 50, 160, 110);
+        if (i < (length - 1)) {
+          doc.addPage();
+          doc.text(title, 10, 10);
         }
-        // download the pdf with all charts
-        var f = new Date();
-        var mes = f.getMonth()+1;
-        doc.save('Commits_report_Branch_'+this.branch.name+'_Repository_'+this.branch.repository+'_'+f.getDate() + "-"+ mes+ "-" +f.getFullYear()+'-'+f.getHours()+'-'+f.getMinutes()+'.pdf');
+      });
     }
+    // download the pdf with all charts
+    var f = new Date();
+    var mes = f.getMonth() + 1;
+    doc.save('Commits_report_Branch_' + this.branch.name + '_Repository_' + this.branch.repository + '_' + f.getDate() + "-" + mes + "-" + f.getFullYear() + '-' + f.getHours() + '-' + f.getMinutes() + '.pdf');
+  }
 
-  goHome(){
-		this.router.navigate(['/repositories']); // navigate to other page
-	}
+  goHome() {
+    this.router.navigate(['/repositories']); // navigate to other page
+  }
 
   logout() {
     this.authService.logout();
