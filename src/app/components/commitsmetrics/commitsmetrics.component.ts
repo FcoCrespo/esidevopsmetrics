@@ -272,7 +272,7 @@ export class CommitsmetricsComponent implements OnInit {
 
         const title = 'Number of Commits per Author in ' + this.branch.name + ' Branch from '+ this.branch.repository + " repository";
         
-        const doc = new jsPDF('l', 'mm', 'a4');
+        const doc = new jsPDF('p', 'mm', 'a4');
         doc.text(title, 10, 10);
         const options = {
           pagesplit: true
