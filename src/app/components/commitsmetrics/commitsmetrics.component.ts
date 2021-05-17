@@ -272,7 +272,7 @@ export class CommitsmetricsComponent implements OnInit {
 
         const title = 'Number of Commits per Author in ' + this.branch.name + ' Branch from '+ this.branch.repository + " repository";
         
-        const doc = new jsPDF('p', 'mm', 'a4');
+        const doc = new jsPDF('l', 'mm', 'a4');
         doc.text(title, 10, 10);
         const options = {
           pagesplit: true
@@ -282,14 +282,16 @@ export class CommitsmetricsComponent implements OnInit {
           const chart = document.getElementById(ids[i]);
           // excute this function then exit loop
           await html2canvas(chart, { scrollY: -window.scrollY, scale: 1 }).then(function (canvas) { 
-            doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
+            doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 300, 200);
             if (i < (length - 1)) {
               doc.addPage();
             }
           });
         }
         // download the pdf with all charts
-        doc.save('Commits_report_' + Date.now() + '.pdf');
+        var f = new Date();
+        var mes = f.getMonth()+1;
+        doc.save('Commits_report_Branch_'+this.branch.name+'_Repository_'+this.branch.repository+'_'+f.getDate() + "-"+ mes+ "-" +f.getFullYear()+'-'+f.getHours()+'-'+f.getMinutes()+'.pdf');
     }
 
   goHome(){
