@@ -193,7 +193,7 @@ export class CommitsmetricsComponent implements OnInit {
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
     myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
-    myCanvasExample.setAttribute("style", "min-height: 200px; height: 200px; max-height: 200px; max-width: 80%;");
+    myCanvasExample.setAttribute("style", "min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;");
     document.getElementById('divChart').appendChild(myCanvasExample);
     var myRouter = this.router;
     var myChart = new Chart("myChart" + this.idCanvas, {
@@ -235,7 +235,7 @@ export class CommitsmetricsComponent implements OnInit {
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
     myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
-    myCanvasExample.setAttribute("style", "min-height: 200px; height: 200px; max-height: 200px; max-width: 80%;");
+    myCanvasExample.setAttribute("style", "min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;");
     document.getElementById('divChartCircle').appendChild(myCanvasExample);
     var myRouter = this.router;
     var myChart = new Chart("myChart" + this.idCanvas, {
@@ -271,7 +271,7 @@ export class CommitsmetricsComponent implements OnInit {
 
     const title = 'Number of Commits per Author in Branch ' + this.branch.name + '  from Repository ' + this.branch.repository;
 
-    const doc = new jsPDF('p', 'mm', 'a4');
+    const doc = new jsPDF('l', 'mm', 'a4');
     doc.text(title, 10, 10);
     const options = {
       pagesplit: true
