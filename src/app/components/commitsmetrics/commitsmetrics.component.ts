@@ -18,6 +18,8 @@ import { CountryService } from 'src/app/modules/tables/services';
 import { Observable } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export interface BranchesData {
   idGithub: string;
@@ -99,7 +101,7 @@ export class CommitsmetricsComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    document.body.classList.add('bg-img-white');
     this.countryService.pageSize = this.pageSize;
     this.countries$ = this.countryService.countries$;
     this.total$ = this.countryService.total$;
@@ -134,8 +136,6 @@ export class CommitsmetricsComponent implements OnInit {
         this.contarCommitsAuthor();
         console.log(this.numCommitsAuthor);
 
-        document.getElementById("commitsbranchauthor").style.visibility = "visible";
-
         var colores = 0;
         for (var cont = 0; cont < this.labelsCommitsAuthor.length; cont++) {
           this.colorsCommits.push(this.colors[colores])
@@ -147,6 +147,8 @@ export class CommitsmetricsComponent implements OnInit {
         this.crearCanvasBarCommitAuthor();
         this.crearCanvasPieCommitAuthor();
       });
+
+      document.getElementById("report").style.visibility = "visible";
 
   }
 
@@ -191,6 +193,7 @@ export class CommitsmetricsComponent implements OnInit {
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
     myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
+    myCanvasExample.setAttribute("style", "min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;");
     document.getElementById('divChart').appendChild(myCanvasExample);
     var myRouter = this.router;
     var myChart = new Chart("myChart" + this.idCanvas, {
@@ -232,6 +235,7 @@ export class CommitsmetricsComponent implements OnInit {
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
     myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
+    myCanvasExample.setAttribute("style", "min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;");
     document.getElementById('divChartCircle').appendChild(myCanvasExample);
     var myRouter = this.router;
     var myChart = new Chart("myChart" + this.idCanvas, {
@@ -260,6 +264,33 @@ export class CommitsmetricsComponent implements OnInit {
       }
     });
   }
+
+  async exportAsPDF()
+    {
+        let ids: Array<string>;
+        ids = ['divChart', 'divChartCircle']; 
+
+        const title = 'Number of Commits per Author in ' + this.branch.name + ' Branch from '+ this.branch.repository + " repository";
+        
+        const doc = new jsPDF('l', 'mm', 'a4');
+        doc.text(title, 10, 10);
+        const options = {
+          pagesplit: true
+        };       
+        const length = ids.length;
+        for (let i = 0; i < length; i++) {
+          const chart = document.getElementById(ids[i]);
+          // excute this function then exit loop
+          await html2canvas(chart, { scrollY: -window.scrollY, scale: 1 }).then(function (canvas) { 
+            doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
+            if (i < (length - 1)) {
+              doc.addPage();
+            }
+          });
+        }
+        // download the pdf with all charts
+        doc.save('Commits_report_' + Date.now() + '.pdf');
+    }
 
   goHome(){
 		this.router.navigate(['/repositories']); // navigate to other page
