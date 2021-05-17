@@ -53,7 +53,7 @@ export class RepositoriesComponent implements OnInit {
         this.repositories = this.data;
         localStorage.setItem('repositories', JSON.stringify(this.repositories));
     });
-
+    document.getElementById("examplebar").setAttribute("class","progress-bar-orange");
   }
 
   get getUsername(): string {
@@ -73,9 +73,14 @@ export class RepositoriesComponent implements OnInit {
     this.router.navigate(['/admin']);      
   }
 
+  goHome(){
+		this.router.navigate(['/repositories']); // navigate to other page
+	}
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
 
 }

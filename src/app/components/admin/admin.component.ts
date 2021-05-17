@@ -83,9 +83,14 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['/commitsmetrics']);      
   }
 
+  goHome(){
+		this.router.navigate(['/repositories']); // navigate to other page
+	}
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
 
 }

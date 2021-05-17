@@ -145,7 +145,7 @@ export class CommitsmetricsComponent implements OnInit {
           }
         }
         this.crearCanvasBarCommitAuthor();
-        //this.crearCanvasPieCommitAuthor();
+        this.crearCanvasPieCommitAuthor();
       });
 
   }
@@ -232,7 +232,7 @@ export class CommitsmetricsComponent implements OnInit {
     console.log(this.idCanvas);
     var myCanvasExample = document.createElement('canvas');
     myCanvasExample.setAttribute("id", "myChart" + this.idCanvas);
-    document.getElementById('divChart').appendChild(myCanvasExample);
+    document.getElementById('divChartCircle').appendChild(myCanvasExample);
     var myRouter = this.router;
     var myChart = new Chart("myChart" + this.idCanvas, {
       type: 'doughnut',
@@ -261,4 +261,12 @@ export class CommitsmetricsComponent implements OnInit {
     });
   }
 
+  goHome(){
+		this.router.navigate(['/repositories']); // navigate to other page
+	}
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }
