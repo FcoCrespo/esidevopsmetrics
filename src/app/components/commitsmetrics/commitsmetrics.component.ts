@@ -268,11 +268,11 @@ export class CommitsmetricsComponent implements OnInit {
   async exportAsPDF()
     {
         let ids: Array<string>;
-        ids = ['divChart', 'divChartCircle']; 
+        ids = ['myChart1', 'myChart2']; 
 
-        const title = 'Number of Commits per Author in ' + this.branch.name + ' Branch from '+ this.branch.repository + " repository";
+        const title = 'Number of Commits per Author in Branch ' + this.branch.name + '  from Repository '+ this.branch.repository;
         
-        const doc = new jsPDF('l', 'mm', 'a4');
+        const doc = new jsPDF('p', 'mm', 'a4');
         doc.text(title, 10, 10);
         const options = {
           pagesplit: true
@@ -281,10 +281,11 @@ export class CommitsmetricsComponent implements OnInit {
         for (let i = 0; i < length; i++) {
           const chart = document.getElementById(ids[i]);
           // excute this function then exit loop
-          await html2canvas(chart, { scrollY: -window.scrollY, scale: 1 }).then(function (canvas) { 
-            doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 300, 200);
+          await html2canvas(chart, { scale: 1 }).then(function (canvas) { 
+            doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
             if (i < (length - 1)) {
               doc.addPage();
+              doc.text(title, 10, 10);
             }
           });
         }
